@@ -73,7 +73,8 @@ namespace Example
 
  Ignore the Atomic.h and LeakedObjectDetector.h files for now.
  You will use those in Part 3 of this project.
-*/
+ */
+
 
 #include <iostream>
 /*
