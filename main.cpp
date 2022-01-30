@@ -109,12 +109,14 @@ struct CoffeeShop
         bool useRewardsPoints(float rewardsPoints);
         void newMemberPromotion(float incentiveAmount);
         bool contactCustomer(std::string msg);
+        void printRewardsPoints();
     };
 
     Coffee brewCoffee( std::string customerName, Coffee coffeeType, int size, std::string brewType, bool cream, bool sugar);
     bool grindCoffee(Coffee coffeeType, int coarseness, Customer customerA);
     void renameCustomer(Customer& customerA, std::string newName); // changed to a reference to fix, IDK
     void pourCoffee(Coffee coffee, int size);
+    void printNumBaristas();
 };
 
 CoffeeShop::CoffeeShop() :
@@ -199,6 +201,11 @@ bool CoffeeShop::Customer::useRewardsPoints(float rewardsPoints)
     return false;
 }
 
+void CoffeeShop::Customer::printRewardsPoints()
+{
+    std::cout << "Toby's rewards's balance is now: " << this->rewardsBalance << std::endl;
+}
+
 void CoffeeShop::Customer::newMemberPromotion(float incentiveAmount)
 {
     rewardsBalance += incentiveAmount;
@@ -267,6 +274,11 @@ void CoffeeShop::pourCoffee(Coffee coffee, int size)
     std::cout << "Size " << size << " " << coffee.roast << " " << coffee.type << " coffee poured.\n";
 }
 
+void CoffeeShop::printNumBaristas()
+{
+    std::cout << "There are " << this->numBaristas << " baristas working.\n";
+}
+
 /*
  copied UDT 2:
  */
@@ -297,6 +309,7 @@ void CoffeeShop::pourCoffee(Coffee coffee, int size)
     bool checkOverdue(Invoice invoice);
     float checkBalance(Invoice invoice);
     void printHolidyCards();
+    void printNumInvoices();
 };
 
 InvoiceManager::InvoiceManager() :
@@ -399,6 +412,11 @@ void InvoiceManager::printHolidyCards()
 
 }
 
+void InvoiceManager::printNumInvoices()
+{
+    std::cout << "tobysInvoices has " << this->numInvoices << std::endl;
+}
+
 /*
  copied UDT 3:
  */
@@ -413,6 +431,7 @@ struct ScooterRental
     void brake(float brake);
     float lock();
     void cruiseControl(int targetSpeed);
+    void printPosition();
 };
 
 ScooterRental::ScooterRental() :
@@ -468,6 +487,10 @@ void ScooterRental::cruiseControl(int targetSpeed)
     if( speed == targetSpeed) std::cout << "Cruisin' at " << speed << "\n";
 }
 
+void ScooterRental::printPosition()
+{
+    std::cout << "Scooter's position is " << this->latitude << ", " << this->longitude << std::endl;
+}
 
 /*
  new UDT 4:
@@ -483,6 +506,7 @@ struct Town
 
     float collectTaxes();
     void quarantine();
+    void printCoffeeShopBalance();
 };
 
 Town::Town()
@@ -523,6 +547,10 @@ void Town::quarantine()
     scooterRental.balance = 999999999.0f;
 }
 
+void Town::printCoffeeShopBalance()
+{
+    std::cout << "The town coffee shop has a balance of " << this->coffeeShop.balance << std::endl;
+}
 
 /*
  new UDT 5:
@@ -540,6 +568,7 @@ struct Studio
 
     void orderRun(std::string runner, InvoiceManager::Invoice invoice, ScooterRental scooter, int latCoord, int longCoord, std::string order);
     void prepareCoffee(std::string runner, std::string clientName, CoffeeShop::Coffee coffeeType, int size, std::string brewType, bool cream, bool sugar);
+    void printNumInterns();
 };
 
 Studio::Studio() :
@@ -600,6 +629,11 @@ void Studio::prepareCoffee(std::string runner, std::string clientName, CoffeeSho
     theKitchen.brewCoffee(clientName, coffeeType, size, brewType, cream, sugar);
 }
 
+void Studio::printNumInterns()
+{
+    std::cout << "There are " << this->numInterns << " interns available.\n";
+}
+
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
 
@@ -628,23 +662,30 @@ int main()
     broBucks.grindCoffee(broBucks.standardBrew, 10, tobyMason);
     broBucks.brewCoffee("Toby Mason", broBucks.standardBrew, 2, "cold brew", true, false);
     broBucks.pourCoffee(broBucks.standardBrew, 3);
+    std::cout << "There are " << broBucks.numBaristas << " baristas working.\n";
+    broBucks.printNumBaristas();
 
     std::cout << std::endl; // new UDT
 
     tobyMason.useRewardsPoints( 130.0f);
     tobyMason.newMemberPromotion( 3.0f);
     std::cout << "Toby's rewards's balance is now: " << tobyMason.rewardsBalance << std::endl;
+    tobyMason.printRewardsPoints();
     tobyMason.useRewardsPoints( 12.0f);
     tobyMason.useRewardsPoints( 2.0f);
     tobyMason.contactCustomer();
     tobyMason.customerPhoneNumber = 3233933291;
     tobyMason.contactCustomer("k");
     tobyMason.contactCustomer();
+    
 
     std::cout << std::endl; // new UDT
 
     InvoiceManager tobyInvoices;
     InvoiceManager::Invoice testInvoice("test");
+    std::cout << "tobysInvoices has " << tobyInvoices.numInvoices << std::endl;
+    tobyInvoices.printNumInvoices();
+
     
     tobyInvoices.createInvoice("test invoice 2", 346255342.0f);
     testInvoice.invoiceNumber = 5;
@@ -667,12 +708,16 @@ int main()
     tobysScooter.cruiseControl(10);
     tobysScooter.cruiseControl(4);
     tobysScooter.lock();
+    std::cout << "Scooter's position is " << tobysScooter.latitude << ", " << tobysScooter.longitude << std::endl;
+    tobysScooter.printPosition();
 
     std::cout << std::endl; // new UDT
 
     Town weHo;
     weHo.collectTaxes();
     weHo.quarantine();
+    std::cout << "The town coffee shop has a balance of " << weHo.coffeeShop.balance << std::endl;
+    weHo.printCoffeeShopBalance();
 
     std::cout << std::endl; // new UDT
 
@@ -682,6 +727,8 @@ int main()
     conway.prepareCoffee("Toby","Gene", conway.theKitchen.standardBrew, 2, "hot");
     conway.prepareCoffee("Seth","Paul", conway.theKitchen.standardBrew, 3, "cold", true, true);
     conway.prepareCoffee("Seth","Eric", conway.theKitchen.standardBrew, 3, "hot", false, true);
+    std::cout << "There are " << conway.numInterns << " interns available.\n";
+    conway.printNumInterns();
 
 
     std::cout << "\n\n# This is the end of main()\n\n";
