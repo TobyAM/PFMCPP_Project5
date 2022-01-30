@@ -183,27 +183,28 @@ bool CoffeeShop::Customer::contactCustomer(std::string msg = "Your order is read
 
 bool CoffeeShop::Customer::useRewardsPoints(float rewardsPoints)
 {
-    if( rewardsMember == true )
+    if( this->rewardsMember == true )
     {
-        if( rewardsBalance > rewardsPoints )
+        if( this->rewardsBalance > rewardsPoints )
         {
-            rewardsBalance -= rewardsPoints;
-            std::cout << name << " used " << rewardsPoints << " points, leaving a balance of " << rewardsBalance << "\n";
+            this->rewardsBalance -= rewardsPoints;
+            std::cout << name << " used " << rewardsPoints << " points, leaving a balance of " << this->rewardsBalance << "\n";
             return true;
         }
-        else std::cout << name << " doesn't have enough points.\n";
+        else std::cout << this->name << " doesn't have enough points.\n";
 
     }
-    else std::cout << name << " is not a rewards member!\n";
+    else std::cout << this->name << " is not a rewards member!\n";
 
     return false;
 }
 
 void CoffeeShop::Customer::newMemberPromotion(float incentiveAmount)
 {
-    rewardsBalance += incentiveAmount;
-    rewardsMember = true;
-    contactCustomer("Welcome to the coffee club!");
+    this->rewardsBalance += incentiveAmount;
+    this->rewardsMember = true;
+    this->contactCustomer("Welcome to the coffee club!");
+    std::cout << "Toby's rewards's balance is now: " << this->rewardsBalance << std::endl;
 }
 
 CoffeeShop::Coffee CoffeeShop::brewCoffee(std::string customerName, Coffee coffeeType, int size, std::string brewType, bool cream = false, bool sugar = false)
@@ -347,6 +348,7 @@ void InvoiceManager::Invoice::markAsPaid(Invoice& invoiceA)
 {
     invoiceA.totalBalance = 0.0f;
     invoiceA.overdue = false;
+    std::cout << "Invoice " << this->invoiceNumber << " remaining balance: " << this->totalBalance << std::endl;
 }
 
 void InvoiceManager::Invoice::duplicate(Invoice& invoiceA)
@@ -434,8 +436,8 @@ ScooterRental::~ScooterRental()
 
 void ScooterRental::accelerate(float throttle = 0.0f)
 {
-    voltage = voltage * throttle;
-    std::cout << "The scooter voltage is " << voltage << std::endl;
+    this->voltage = voltage * throttle;
+    std::cout << "The scooter voltage is " << this->voltage << std::endl;
 }
 
 void ScooterRental::brake(float brake = 0.0f)
@@ -504,9 +506,9 @@ std::cout << "coffeeShop with balance of $" << coffeeShop.balance << " for $"<< 
 std::cout << "scooterRental with balance of $" << scooterRental.balance << " for $" << scooterRental.balance * 0.3f << std::endl;
 
 taxes += coffeeShop.balance * 0.3f + scooterRental.balance * 0.3f;
-totalTaxes += taxes;
+this->totalTaxes += taxes;
 
-std::cout << "for a total haul of $" << taxes << (taxes < 1 ? "?" : "!") << std::endl;
+std::cout << "for a total haul of $" << this->totalTaxes << (this->totalTaxes < 1 ? "?" : "!") << std::endl;
 
 coffeeShop.balance *= 0.7f;
 scooterRental.balance *= 0.7f;
@@ -563,6 +565,7 @@ void Studio::orderRun(std::string runner, InvoiceManager::Invoice invoice, Scoot
     int latRectified = latCoord + 18;
     int scooterLongRectified = scooter.longitude + 18;
     int scooterLatRectified = scooter.latitude + 18;
+    
     
     for(int x = 1; x <= 37; ++x)
     {
@@ -636,6 +639,7 @@ int main()
     std::cout << "Toby's rewards's balance is now: " << tobyMason.rewardsBalance << std::endl;
     tobyMason.useRewardsPoints( 12.0f);
     tobyMason.useRewardsPoints( 2.0f);
+    std::cout << "Toby Mason used 2 points, leaving a balance of " << tobyMason.rewardsBalance << "\n";
     tobyMason.contactCustomer();
     tobyMason.customerPhoneNumber = 3233933291;
     tobyMason.contactCustomer("k");
@@ -663,6 +667,7 @@ int main()
     ScooterRental tobysScooter;
 
     tobysScooter.accelerate( 1.5f);
+    std::cout << "The scooter voltage is " << tobysScooter.voltage << std::endl;
     tobysScooter.brake(100.0f);
     tobysScooter.cruiseControl(10);
     tobysScooter.cruiseControl(4);
@@ -672,6 +677,7 @@ int main()
 
     Town weHo;
     weHo.collectTaxes();
+    std::cout << "for a total haul of $" << weHo.totalTaxes << "?\n";
     weHo.quarantine();
 
     std::cout << std::endl; // new UDT
