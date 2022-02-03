@@ -321,13 +321,22 @@ struct CoffeeShopWrapper
 
         void download(const std::string format);
         void markAsPaid(Invoice& invoiceA);
-        void duplicate(const Invoice& invoiceA);
 
         JUCE_LEAK_DETECTOR(Invoice)
     };
 
+    struct InvoiceWrapper
+    {
+        InvoiceWrapper( Invoice* ptr) : pointer( ptr) { }
+        ~InvoiceWrapper()
+        {
+            delete pointer;
+        }
 
-    Invoice* createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
+        Invoice* pointer = nullptr;
+    };
+
+    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
     bool checkOverdue(const Invoice& invoice);
     float checkBalance(const Invoice& invoice);
     void printHolidyCards();
@@ -375,17 +384,6 @@ InvoiceManager::Invoice::~Invoice()
     std::cout << "-----------------\n";
 }
 
-struct InvoiceWrapper
-{
-    InvoiceWrapper( InvoiceManager::Invoice* ptr) : pointer( ptr) { }
-    ~InvoiceWrapper()
-    {
-        delete pointer;
-    }
-
-    InvoiceManager::Invoice* pointer = nullptr;
-};
-
 void InvoiceManager::Invoice::download(std::string format = "pdf")
 {
     std::cout << "https:\\\\my.freshbooks.com\\invoice." << format << "\n";
@@ -397,21 +395,14 @@ void InvoiceManager::Invoice::markAsPaid(Invoice& invoiceA)
     invoiceA.overdue = false;
 }
 
-void InvoiceManager::Invoice::duplicate(const Invoice& invoiceA)
+InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
 {
-    Invoice* invoiceB = new Invoice(invoiceA);
-    ++invoiceB->invoiceNumber;
-    std::cout << "Duplicated invoice " << invoiceA.invoiceNumber << " as " << invoiceB->invoiceNumber << std::endl;
-}
-
-InvoiceManager::Invoice* InvoiceManager::createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
-{
-    Invoice* newInvoice = new Invoice(name);
+    InvoiceWrapper newInvoice( new Invoice(name) );
     ++numInvoices;
-    newInvoice->invoiceNumber = numInvoices;
-    newInvoice->dueDate = date;
-    newInvoice->workType = type;
-    newInvoice->workTime = time;
+    newInvoice.pointer->invoiceNumber = numInvoices;
+    newInvoice.pointer->dueDate = date;
+    newInvoice.pointer->workType = type;
+    newInvoice.pointer->workTime = time;
 
     return newInvoice;
 }
@@ -766,10 +757,10 @@ int main()
     std::cout << std::endl; // new UDT
 
     InvoiceManagerWrapper tobyInvoices( new InvoiceManager() );
-    InvoiceWrapper testInvoice( new InvoiceManager::Invoice("test") );
+    InvoiceManager::InvoiceWrapper testInvoice( new InvoiceManager::Invoice("test") );
     std::cout << "tobysInvoices has " << tobyInvoices.pointerToInvoiceManager->numInvoices << std::endl;
     tobyInvoices.pointerToInvoiceManager->printNumInvoices();
-    // tobyInvoices.pointerToInvoiceManager->createInvoice("test invoice 2", 346255342.0f);
+    tobyInvoices.pointerToInvoiceManager->createInvoice("test invoice 2", 346255342.0f);
     testInvoice.pointer->invoiceNumber = 5;
     tobyInvoices.pointerToInvoiceManager->checkOverdue(*testInvoice.pointer);
     testInvoice.pointer->totalBalance = 543.21f;
@@ -779,8 +770,7 @@ int main()
     testInvoice.pointer->download();
     testInvoice.pointer->markAsPaid(*testInvoice.pointer);
     std::cout << "Invoice " << testInvoice.pointer->invoiceNumber << " remaining balance: " << testInvoice.pointer->totalBalance << std::endl;
-    // testInvoice.pointer->duplicate(testInvoice.pointer); don't know how to fix this for pointers
-
+    
     std::cout << std::endl; // new UDT
     
     ScooterRentalWrapper tobysScooter( new ScooterRental() );
@@ -804,7 +794,7 @@ int main()
     std::cout << std::endl; // new UDT
 
     StudioWrapper conway( new Studio() );
-    InvoiceWrapper kiss( conway.pointer->invoices.createInvoice("Kiss", 999999.9f, "tracking") );
+    InvoiceManager::InvoiceWrapper kiss( conway.pointer->invoices.createInvoice("Kiss", 999999.9f, "tracking") );
     conway.pointer->orderRun("Toby", *kiss.pointer, conway.pointer->scooterA, -5, 9, "a burger from Le Petite Trois");
     conway.pointer->prepareCoffee("Toby","Gene", conway.pointer->theKitchen.standardBrew, 2, "hot");
     conway.pointer->prepareCoffee("Seth","Paul", conway.pointer->theKitchen.standardBrew, 3, "cold", true, true);
