@@ -1,4 +1,4 @@
-/*
+    /*
  Project 5: Part 3 / 4
  video: Chapter 3 Part 4: 
 
@@ -19,10 +19,11 @@ Create a branch named Part3
       
     This means if you had something like the following in your main() previously: 
 */
+
 #if false
- Axe axe;
- std::cout << "axe sharpness: " << axe.sharpness << "\n";
- #endif
+Axe axe;
+std::cout << "axe sharpness: " << axe.sharpness << "\n";
+#endif
  /*
     you would update that to use your wrappers:
     
@@ -53,7 +54,7 @@ void someMemberFunction(Axe axe);
 void someMemberFunction(Axe& axe);
 #endif
 /*
-If you aren't modifying the passed-in object inside the function, pass by const reference.
+If you aren't modifying the passed-in object inside the  function, pass by const reference.
 */
 #if false
 void someMemberFunction(const Axe& axe);
@@ -68,9 +69,7 @@ void someMemberFunction(const Axe& axe);
  */
 
 
-
-
-
+#include "LeakedObjectDetector.h"
 #include <iostream>
 /*
  copied UDT 1:
@@ -89,6 +88,7 @@ struct CoffeeShop
         ~Coffee();
         std::string type, roast;
         int coarseness;
+        JUCE_LEAK_DETECTOR(Coffee)
     };
     Coffee standardBrew;
 
@@ -102,16 +102,18 @@ struct CoffeeShop
         std::string name;
 
         bool useRewardsPoints(float rewardsPoints);
-        void newMemberPromotion(float incentiveAmount);
-        bool contactCustomer(std::string msg);
+        void newMemberPromotion(const float incentiveAmount);
+        bool contactCustomer(const std::string msg);
         void printRewardsPoints();
+        JUCE_LEAK_DETECTOR(Customer)
     };
 
-    Coffee brewCoffee( std::string customerName, Coffee coffeeType, int size, std::string brewType, bool cream, bool sugar);
-    bool grindCoffee(Coffee coffeeType, int coarseness, Customer customerA);
-    void renameCustomer(Customer& customerA, std::string newName); // changed to a reference to fix, IDK
-    void pourCoffee(Coffee coffee, int size);
+    Coffee brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool cream, const bool sugar);
+    bool grindCoffee(const Coffee& coffeeType, const int coarseness, const Customer& customerA);
+    void renameCustomer(Customer& customerA, const std::string newName); // changed to a reference to fix, IDK
+    void pourCoffee(const Coffee& coffee, const int size);
     void printNumBaristas();
+    JUCE_LEAK_DETECTOR(CoffeeShop)
 };
 
 CoffeeShop::CoffeeShop() :
@@ -161,6 +163,17 @@ CoffeeShop::Customer::~Customer()
 
 }
 
+struct CustomerWrapper
+{
+    CustomerWrapper( CoffeeShop::Customer* ptr) : pointer( ptr) { }
+    ~CustomerWrapper()
+    {
+        delete pointer;
+    }
+
+    CoffeeShop::Customer* pointer = nullptr;
+};
+
 bool CoffeeShop::Customer::contactCustomer(std::string msg = "Your order is ready.")
 {
     if( customerPhoneNumber > 0 )
@@ -208,7 +221,7 @@ void CoffeeShop::Customer::newMemberPromotion(float incentiveAmount)
     contactCustomer("Welcome to the coffee club!");
 }
 
-CoffeeShop::Coffee CoffeeShop::brewCoffee(std::string customerName, Coffee coffeeType, int size, std::string brewType, bool cream = false, bool sugar = false)
+CoffeeShop::Coffee CoffeeShop::brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool cream = false, const bool sugar = false)
 {
     std::cout << "New order for " << customerName << ": size " << size << ", " << brewType << ", " << coffeeType.type << ", " << coffeeType.roast;
     if( cream)
@@ -228,7 +241,7 @@ CoffeeShop::Coffee CoffeeShop::brewCoffee(std::string customerName, Coffee coffe
     return newCoffee;
 }
 
-bool CoffeeShop::grindCoffee(Coffee coffeeType, int coarseness, Customer customerA)
+bool CoffeeShop::grindCoffee(const Coffee& coffeeType, const int coarseness, const Customer& customerA)
 {
     for( int i = coffeeType.coarseness; i < coarseness; ++i)
     {
@@ -245,6 +258,7 @@ void CoffeeShop::renameCustomer(Customer& customerA, std::string newName)
         std::cout << customerA.name;
         customerA.name = newName;
         std::cout << "'s name changed to: " << customerA.name << "\n";
+    
     }
     else
     {
@@ -252,7 +266,7 @@ void CoffeeShop::renameCustomer(Customer& customerA, std::string newName)
     }
 }
 
-void CoffeeShop::pourCoffee(Coffee coffee, int size)
+void CoffeeShop::pourCoffee(const Coffee& coffee, const int size)
 {
     std::cout << "Pouring coffee...\n";
     for( int i = 1; i < size; ++i)
@@ -274,6 +288,17 @@ void CoffeeShop::printNumBaristas()
     std::cout << "There are " << this->numBaristas << " baristas working.\n";
 }
 
+struct CoffeeShopWrapper
+{
+    CoffeeShopWrapper( CoffeeShop* shop) : pointerToShop( shop) { }
+    ~CoffeeShopWrapper()
+    {
+        delete pointerToShop;
+    }
+
+    CoffeeShop* pointerToShop = nullptr;
+};
+
 /*
  copied UDT 2:
  */
@@ -294,17 +319,30 @@ void CoffeeShop::printNumBaristas()
         float workTime, totalBalance, dueDate;
         bool overdue;
 
-        void download(std::string format);
+        void download(const std::string format);
         void markAsPaid(Invoice& invoiceA);
-        void duplicate(Invoice& invoiceA);
+
+        JUCE_LEAK_DETECTOR(Invoice)
     };
 
+    struct InvoiceWrapper
+    {
+        InvoiceWrapper( Invoice* ptr) : pointer( ptr) { }
+        ~InvoiceWrapper()
+        {
+            delete pointer;
+        }
 
-    Invoice createInvoice(std::string clientName, float dueDate, std::string workType, float workTime);
-    bool checkOverdue(Invoice invoice);
-    float checkBalance(Invoice invoice);
+        Invoice* pointer = nullptr;
+    };
+
+    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
+    bool checkOverdue(const Invoice& invoice);
+    float checkBalance(const Invoice& invoice);
     void printHolidyCards();
     void printNumInvoices();
+
+    JUCE_LEAK_DETECTOR(InvoiceManager)
 };
 
 InvoiceManager::InvoiceManager() :
@@ -357,26 +395,19 @@ void InvoiceManager::Invoice::markAsPaid(Invoice& invoiceA)
     invoiceA.overdue = false;
 }
 
-void InvoiceManager::Invoice::duplicate(Invoice& invoiceA)
+InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
 {
-    Invoice invoiceB = invoiceA;    // I would not really do this
-    ++invoiceB.invoiceNumber;
-    std::cout << "Duplicated invoice " << invoiceA.invoiceNumber << " as " << invoiceB.invoiceNumber << std::endl;
-}
-
-InvoiceManager::Invoice InvoiceManager::createInvoice(std::string name, float date, std::string type = "post", float time = 0.0f)
-{
-    Invoice newInvoice(name);
+    InvoiceWrapper newInvoice( new Invoice(name) );
     ++numInvoices;
-    newInvoice.invoiceNumber = numInvoices;
-    newInvoice.dueDate = date;
-    newInvoice.workType = type;
-    newInvoice.workTime = time;
+    newInvoice.pointer->invoiceNumber = numInvoices;
+    newInvoice.pointer->dueDate = date;
+    newInvoice.pointer->workType = type;
+    newInvoice.pointer->workTime = time;
 
     return newInvoice;
 }
 
-bool InvoiceManager::checkOverdue(Invoice invoiceA)
+bool InvoiceManager::checkOverdue(const Invoice& invoiceA)
 {
     std::cout << "Invoice " << invoiceA.invoiceNumber << " is ";
     if( invoiceA.overdue == false)
@@ -388,11 +419,12 @@ bool InvoiceManager::checkOverdue(Invoice invoiceA)
     return invoiceA.overdue;
 }
 
-float InvoiceManager::checkBalance(Invoice invoiceA)
+float InvoiceManager::checkBalance(const Invoice& invoiceA)
 {
     std::cout << invoiceA.invoiceNumber << " balance is: " << invoiceA.totalBalance << std::endl;
 
     return invoiceA.totalBalance;
+
 }
 
 void InvoiceManager::printHolidyCards()
@@ -412,6 +444,17 @@ void InvoiceManager::printNumInvoices()
     std::cout << "tobysInvoices has " << this->numInvoices << std::endl;
 }
 
+struct InvoiceManagerWrapper
+{
+    InvoiceManagerWrapper( InvoiceManager* pointer) : pointerToInvoiceManager( pointer) { }
+    ~InvoiceManagerWrapper()
+    {
+        delete pointerToInvoiceManager;
+    }
+
+    InvoiceManager* pointerToInvoiceManager = nullptr;
+};
+
 /*
  copied UDT 3:
  */
@@ -422,11 +465,13 @@ struct ScooterRental
     int distanceTraveled, speed, latitude, longitude;
     float rentalTime, balance, voltage;
 
-    void accelerate(float throttle);
-    void brake(float brake);
+    void accelerate(const float throttle);
+    void brake(const float brake);
     float lock();
-    void cruiseControl(int targetSpeed);
+    void cruiseControl(const int targetSpeed);
     void printPosition();
+
+    JUCE_LEAK_DETECTOR(ScooterRental)
 };
 
 ScooterRental::ScooterRental() :
@@ -487,6 +532,17 @@ void ScooterRental::printPosition()
     std::cout << "Scooter's position is " << this->latitude << ", " << this->longitude << std::endl;
 }
 
+struct ScooterRentalWrapper
+{
+    ScooterRentalWrapper( ScooterRental* ptr) : pointer( ptr) { }
+    ~ScooterRentalWrapper()
+    {
+        delete pointer;
+    }
+
+    ScooterRental* pointer = nullptr;
+};
+
 /*
  new UDT 4:
  with 2 member functions
@@ -502,6 +558,8 @@ struct Town
     float collectTaxes();
     void quarantine();
     void printCoffeeShopBalance();
+
+    JUCE_LEAK_DETECTOR(Town)
 };
 
 Town::Town()
@@ -547,6 +605,17 @@ void Town::printCoffeeShopBalance()
     std::cout << "The town coffee shop has a balance of " << this->coffeeShop.balance << std::endl;
 }
 
+struct TownWrapper
+{
+    TownWrapper( Town* ptr) : pointer( ptr) { }
+    ~TownWrapper()
+    {
+        delete pointer;
+    }
+
+    Town* pointer = nullptr;
+};
+
 /*
  new UDT 5:
  with 2 member functions
@@ -561,9 +630,11 @@ struct Studio
     ScooterRental scooterA, scooterB;
     InvoiceManager invoices;
 
-    void orderRun(std::string runner, InvoiceManager::Invoice invoice, ScooterRental scooter, int latCoord, int longCoord, std::string order);
-    void prepareCoffee(std::string runner, std::string clientName, CoffeeShop::Coffee coffeeType, int size, std::string brewType, bool cream, bool sugar);
+    void orderRun(const std::string runner, const InvoiceManager::Invoice& invoice, const ScooterRental& scooter, const int latCoord, const int longCoord, const std::string order);
+    void prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool cream, const bool sugar);
     void printNumInterns();
+
+    JUCE_LEAK_DETECTOR(Studio)
 };
 
 Studio::Studio() :
@@ -579,7 +650,7 @@ Studio::~Studio()
     std::cout << "\n- Destructing Studio!\n";
 }
 
-void Studio::orderRun(std::string runner, InvoiceManager::Invoice invoice, ScooterRental scooter, int latCoord, int longCoord, std::string order)
+void Studio::orderRun(const std::string runner, const InvoiceManager::Invoice& invoice, const ScooterRental& scooter, const int latCoord, const int longCoord, const std::string order)
 {
     std::cout << "Hey " << runner << " you need to go to grab " << order << " for " << invoice.clientName << ".\n";
     std::cout << "Here's a map, X marks the spot U need to go to:\n";
@@ -618,7 +689,7 @@ void Studio::orderRun(std::string runner, InvoiceManager::Invoice invoice, Scoot
    
 }
 
-void Studio::prepareCoffee(std::string runner, std::string clientName, CoffeeShop::Coffee coffeeType, int size, std::string brewType, bool cream = false, bool sugar = false)
+void Studio::prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool cream = false, const bool sugar = false)
 {
     std::cout << "Hey " << runner << ", you need to make a " << brewType << " size " << size << " " << coffeeType.type << " coffee" << (cream && sugar ? " with cream and sugar" : (cream ? " with cream " : (sugar ? " with sugar" : ""))) << " for " << clientName << std::endl;
     theKitchen.brewCoffee(clientName, coffeeType, size, brewType, cream, sugar);
@@ -628,6 +699,17 @@ void Studio::printNumInterns()
 {
     std::cout << "There are " << this->numInterns << " interns available.\n";
 }
+
+struct StudioWrapper
+{
+    StudioWrapper( Studio* ptr) : pointer( ptr) { }
+    ~StudioWrapper()
+    {
+        delete pointer;
+    }
+
+    Studio* pointer = nullptr;
+};
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
@@ -643,87 +725,82 @@ void Studio::printNumInterns()
  Wait for my code review.
  */
 
-#include <iostream>
 int main()
 {
     std::cout << "good to go!" << std::endl;
 
     std::cout << std::endl; // new UDT
 
-    CoffeeShop broBucks;
-    CoffeeShop::Customer tobyMason;
+    CoffeeShopWrapper broBucks( new CoffeeShop() );
+    CustomerWrapper tobyMason( new CoffeeShop::Customer() );
 
-    broBucks.renameCustomer(tobyMason, "Toby Mason");
-    broBucks.grindCoffee(broBucks.standardBrew, 10, tobyMason);
-    broBucks.brewCoffee("Toby Mason", broBucks.standardBrew, 2, "cold brew", true, false);
-    broBucks.pourCoffee(broBucks.standardBrew, 3);
-    std::cout << "There are " << broBucks.numBaristas << " baristas working.\n";
-    broBucks.printNumBaristas();
-
-    std::cout << std::endl; // new UDT
-
-    tobyMason.useRewardsPoints( 130.0f);
-    tobyMason.newMemberPromotion( 3.0f);
-    std::cout << "Toby's rewards's balance is now: " << tobyMason.rewardsBalance << std::endl;
-    tobyMason.printRewardsPoints();
-    tobyMason.useRewardsPoints( 12.0f);
-    tobyMason.useRewardsPoints( 2.0f);
-    tobyMason.contactCustomer();
-    tobyMason.customerPhoneNumber = 3233933291;
-    tobyMason.contactCustomer("k");
-    tobyMason.contactCustomer();
-    
+    broBucks.pointerToShop->renameCustomer(*tobyMason.pointer, "Toby Mason");
+    broBucks.pointerToShop->grindCoffee(broBucks.pointerToShop->standardBrew, 10, *tobyMason.pointer);
+    broBucks.pointerToShop->brewCoffee("Toby Mason", broBucks.pointerToShop->standardBrew, 2, "cold brew", true, false);
+    broBucks.pointerToShop->pourCoffee(broBucks.pointerToShop->standardBrew, 3);
+    std::cout << "There are " << broBucks.pointerToShop->numBaristas << " baristas working.\n";
+    broBucks.pointerToShop->printNumBaristas();
 
     std::cout << std::endl; // new UDT
 
-    InvoiceManager tobyInvoices;
-    InvoiceManager::Invoice testInvoice("test");
-    std::cout << "tobysInvoices has " << tobyInvoices.numInvoices << std::endl;
-    tobyInvoices.printNumInvoices();
+    tobyMason.pointer->useRewardsPoints( 130.0f);
+    tobyMason.pointer->newMemberPromotion( 3.0f);
+    std::cout << "Toby's rewards's balance is now: " << tobyMason.pointer->rewardsBalance << std::endl;
+    tobyMason.pointer->printRewardsPoints();
+    tobyMason.pointer->useRewardsPoints( 12.0f);
+    tobyMason.pointer->useRewardsPoints( 2.0f);
+    tobyMason.pointer->contactCustomer();
+    tobyMason.pointer->customerPhoneNumber = 3233933291;
+    tobyMason.pointer->contactCustomer("k");
+    tobyMason.pointer->contactCustomer();
 
+    std::cout << std::endl; // new UDT
+
+    InvoiceManagerWrapper tobyInvoices( new InvoiceManager() );
+    InvoiceManager::InvoiceWrapper testInvoice( new InvoiceManager::Invoice("test") );
+    std::cout << "tobysInvoices has " << tobyInvoices.pointerToInvoiceManager->numInvoices << std::endl;
+    tobyInvoices.pointerToInvoiceManager->printNumInvoices();
+    InvoiceManager::InvoiceWrapper testInvoice2( tobyInvoices.pointerToInvoiceManager->createInvoice("test invoice 2", 346255342.0f));
+    testInvoice.pointer->invoiceNumber = 5;
+    tobyInvoices.pointerToInvoiceManager->checkOverdue(*testInvoice.pointer);
+    testInvoice.pointer->totalBalance = 543.21f;
+    testInvoice.pointer->overdue = true;
+    tobyInvoices.pointerToInvoiceManager->checkBalance(*testInvoice.pointer);
+    tobyInvoices.pointerToInvoiceManager->printHolidyCards();
+    testInvoice.pointer->download();
+    testInvoice.pointer->markAsPaid(*testInvoice.pointer);
+    std::cout << "Invoice " << testInvoice.pointer->invoiceNumber << " remaining balance: " << testInvoice.pointer->totalBalance << std::endl;
     
-    tobyInvoices.createInvoice("test invoice 2", 346255342.0f);
-    testInvoice.invoiceNumber = 5;
-    tobyInvoices.checkOverdue(testInvoice);
-    testInvoice.totalBalance = 543.21f;
-    testInvoice.overdue = true;
-    tobyInvoices.checkBalance(testInvoice);
-    tobyInvoices.printHolidyCards();
-    testInvoice.download();
-    testInvoice.markAsPaid(testInvoice);
-    std::cout << "Invoice " << testInvoice.invoiceNumber << " remaining balance: " << testInvoice.totalBalance << std::endl;
-    testInvoice.duplicate(testInvoice);
-
     std::cout << std::endl; // new UDT
     
-    ScooterRental tobysScooter;
+    ScooterRentalWrapper tobysScooter( new ScooterRental() );
 
-    tobysScooter.accelerate( 1.5f);
-    tobysScooter.brake(100.0f);
-    tobysScooter.cruiseControl(10);
-    tobysScooter.cruiseControl(4);
-    tobysScooter.lock();
-    std::cout << "Scooter's position is " << tobysScooter.latitude << ", " << tobysScooter.longitude << std::endl;
-    tobysScooter.printPosition();
-
-    std::cout << std::endl; // new UDT
-
-    Town weHo;
-    weHo.collectTaxes();
-    weHo.quarantine();
-    std::cout << "The town coffee shop has a balance of " << weHo.coffeeShop.balance << std::endl;
-    weHo.printCoffeeShopBalance();
+    tobysScooter.pointer->accelerate( 1.5f);
+    tobysScooter.pointer->brake(100.0f);
+    tobysScooter.pointer->cruiseControl(10);
+    tobysScooter.pointer->cruiseControl(4);
+    tobysScooter.pointer->lock();
+    std::cout << "Scooter's position is " << tobysScooter.pointer->latitude << ", " << tobysScooter.pointer->longitude << std::endl;
+    tobysScooter.pointer->printPosition();
 
     std::cout << std::endl; // new UDT
 
-    Studio conway;
-    InvoiceManager::Invoice kiss = conway.invoices.createInvoice("Kiss", 999999.9f, "tracking");
-    conway.orderRun("Toby", kiss, conway.scooterA, -5, 9, "a burger from Le Petite Trois");
-    conway.prepareCoffee("Toby","Gene", conway.theKitchen.standardBrew, 2, "hot");
-    conway.prepareCoffee("Seth","Paul", conway.theKitchen.standardBrew, 3, "cold", true, true);
-    conway.prepareCoffee("Seth","Eric", conway.theKitchen.standardBrew, 3, "hot", false, true);
-    std::cout << "There are " << conway.numInterns << " interns available.\n";
-    conway.printNumInterns();
+    TownWrapper weHo( new Town() );
+    weHo.pointer->collectTaxes();
+    weHo.pointer->quarantine();
+    std::cout << "The town coffee shop has a balance of " << weHo.pointer->coffeeShop.balance << std::endl;
+    weHo.pointer->printCoffeeShopBalance();
+
+    std::cout << std::endl; // new UDT
+
+    StudioWrapper conway( new Studio() );
+    InvoiceManager::InvoiceWrapper kiss( conway.pointer->invoices.createInvoice("Kiss", 999999.9f, "tracking") );
+    conway.pointer->orderRun("Toby", *kiss.pointer, conway.pointer->scooterA, -5, 9, "a burger from Le Petite Trois");
+    conway.pointer->prepareCoffee("Toby","Gene", conway.pointer->theKitchen.standardBrew, 2, "hot");
+    conway.pointer->prepareCoffee("Seth","Paul", conway.pointer->theKitchen.standardBrew, 3, "cold", true, true);
+    conway.pointer->prepareCoffee("Seth","Eric", conway.pointer->theKitchen.standardBrew, 3, "hot", false, true);
+    std::cout << "There are " << conway.pointer->numInterns << " interns available.\n";
+    conway.pointer->printNumInterns();
 
 
     std::cout << "\n\n# This is the end of main()\n\n";
