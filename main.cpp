@@ -760,7 +760,7 @@ int main()
     InvoiceManager::InvoiceWrapper testInvoice( new InvoiceManager::Invoice("test") );
     std::cout << "tobysInvoices has " << tobyInvoices.pointerToInvoiceManager->numInvoices << std::endl;
     tobyInvoices.pointerToInvoiceManager->printNumInvoices();
-    tobyInvoices.pointerToInvoiceManager->createInvoice("test invoice 2", 346255342.0f);
+    InvoiceManager::InvoiceWrapper testInvoice2( tobyInvoices.pointerToInvoiceManager->createInvoice("test invoice 2", 346255342.0f));
     testInvoice.pointer->invoiceNumber = 5;
     tobyInvoices.pointerToInvoiceManager->checkOverdue(*testInvoice.pointer);
     testInvoice.pointer->totalBalance = 543.21f;
