@@ -1,3 +1,8 @@
+#include <iostream>
+#include "LeakedObjectDetector.h"
+#include "CoffeeShop.h"
+#include "ScooterRental.h"
+#include "InvoiceManager.h"
 #include "Studio.h"
 
 Studio::Studio() :
@@ -52,10 +57,10 @@ void Studio::orderRun(const std::string runner, const InvoiceManager::Invoice& i
    
 }
 
-void Studio::prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool cream, const bool sugar)
+void Studio::prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool withCream, const bool withSugar)
 {
-    std::cout << "Hey " << runner << ", you need to make a " << brewType << " size " << size << " " << coffeeType.type << " coffee" << (cream && sugar ? " with cream and sugar" : (cream ? " with cream " : (sugar ? " with sugar" : ""))) << " for " << clientName << std::endl;
-    theKitchen.brewCoffee(clientName, coffeeType, size, brewType, cream, sugar);
+    std::cout << "Hey " << runner << ", you need to make a " << brewType << " size " << size << " " << coffeeType.type << " coffee" << (withCream && withSugar ? " with cream and sugar" : (withCream ? " with cream " : (withSugar ? " with sugar" : ""))) << " for " << clientName << std::endl;
+    theKitchen.brewCoffee(clientName, coffeeType, size, brewType, withCream, withSugar);
 }
 
 void Studio::printNumInterns()

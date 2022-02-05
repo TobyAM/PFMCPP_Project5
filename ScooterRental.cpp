@@ -1,3 +1,5 @@
+#include <iostream>
+#include "LeakedObjectDetector.h"
 #include "ScooterRental.h"
 
 ScooterRental::ScooterRental() :

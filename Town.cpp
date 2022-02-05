@@ -1,3 +1,7 @@
+#include <iostream>
+#include "LeakedObjectDetector.h"
+#include "CoffeeShop.h"
+#include "ScooterRental.h"
 #include "Town.h"
 
 Town::Town()
@@ -12,21 +16,21 @@ Town::~Town()
 
 float Town::collectTaxes()
 {
-float taxes = 0.0f;
+    float taxes = 0.0f;
 
-std::cout << "Taxing:\n";
-std::cout << "coffeeShop with balance of $" << coffeeShop.balance << " for $"<< coffeeShop.balance * 0.3f << std::endl;
-std::cout << "scooterRental with balance of $" << scooterRental.balance << " for $" << scooterRental.balance * 0.3f << std::endl;
+    std::cout << "Taxing:\n";
+    std::cout << "coffeeShop with balance of $" << coffeeShop.balance << " for $"<< coffeeShop.balance * 0.3f << std::endl;
+    std::cout << "scooterRental with balance of $" << scooterRental.balance << " for $" << scooterRental.balance * 0.3f << std::endl;
 
-taxes += coffeeShop.balance * 0.3f + scooterRental.balance * 0.3f;
-totalTaxes += taxes;
+    taxes += coffeeShop.balance * 0.3f + scooterRental.balance * 0.3f;
+    totalTaxes += taxes;
 
-std::cout << "for a total haul of $" << taxes << (taxes < 1 ? "?" : "!") << std::endl;
+    std::cout << "for a total haul of $" << taxes << (taxes < 1 ? "?" : "!") << std::endl;
 
-coffeeShop.balance *= 0.7f;
-scooterRental.balance *= 0.7f;
+    coffeeShop.balance *= 0.7f;
+    scooterRental.balance *= 0.7f;
 
-return taxes;
+    return taxes;
 }
 
 void Town::quarantine()

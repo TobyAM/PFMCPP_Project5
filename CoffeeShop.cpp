@@ -1,3 +1,5 @@
+#include <iostream>
+#include "LeakedObjectDetector.h"
 #include "CoffeeShop.h"
 
 CoffeeShop::CoffeeShop() :
@@ -94,15 +96,15 @@ void CoffeeShop::Customer::newMemberPromotion(float incentiveAmount)
     contactCustomer("Welcome to the coffee club!");
 }
 
-CoffeeShop::Coffee CoffeeShop::brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool cream = false, const bool sugar = false)
+CoffeeShop::Coffee CoffeeShop::brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool withCream = false, const bool withSugar = false)
 {
     std::cout << "New order for " << customerName << ": size " << size << ", " << brewType << ", " << coffeeType.type << ", " << coffeeType.roast;
-    if( cream)
+    if( withCream)
     {
         std::cout << ", with cream";
     }
 
-    if( sugar)
+    if( withSugar)
     {
         std::cout << ", with sugar";
     }

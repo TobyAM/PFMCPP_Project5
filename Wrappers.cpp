@@ -1,5 +1,11 @@
-#include "Wrappers.h"
+#include <iostream>
 #include "InvoiceManager.h"
+#include "CoffeeShop.h"
+#include "ScooterRental.h"
+#include "Studio.h"
+#include "Town.h"
+#include "Wrappers.h"
+
 
 CoffeeShopWrapper::CoffeeShopWrapper( CoffeeShop* shop) : pointerToShop( shop) { }
 
@@ -14,23 +20,10 @@ CustomerWrapper::~CustomerWrapper()
     delete pointer;
 }
 
-
 InvoiceManager::InvoiceWrapper::InvoiceWrapper( InvoiceManager::Invoice* ptr) : pointer( ptr) { }
 InvoiceManager::InvoiceWrapper::~InvoiceWrapper()
 {
     delete pointer;
-}
-
-InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type, const float time)
-{
-    InvoiceManager::InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
-    // ++numInvoices;
-    // newInvoice.pointer->invoiceNumber = numInvoices;
-    newInvoice.pointer->dueDate = date;
-    newInvoice.pointer->workType = type;
-    newInvoice.pointer->workTime = time;
-
-    return newInvoice;
 }
 
 InvoiceManagerWrapper::InvoiceManagerWrapper( InvoiceManager* pointer) : pointerToInvoiceManager( pointer) { }

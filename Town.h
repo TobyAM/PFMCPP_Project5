@@ -1,8 +1,4 @@
 #pragma once
-#include <iostream>
-#include "LeakedObjectDetector.h"
-#include "CoffeeShop.h"
-#include "ScooterRental.h"
 
 struct Town         
 {

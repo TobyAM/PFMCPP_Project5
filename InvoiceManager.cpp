@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include "LeakedObjectDetector.h"
 #include "InvoiceManager.h"
 
 InvoiceManager::InvoiceManager() :
@@ -86,4 +88,16 @@ void InvoiceManager::printHolidyCards()
 void InvoiceManager::printNumInvoices()
 {
     std::cout << "tobysInvoices has " << this->numInvoices << std::endl;
+}
+
+InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type, const float time)
+{
+    InvoiceManager::InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
+    // ++numInvoices;
+    // newInvoice.pointer->invoiceNumber = numInvoices;
+    newInvoice.pointer->dueDate = date;
+    newInvoice.pointer->workType = type;
+    newInvoice.pointer->workTime = time;
+
+    return newInvoice;
 }

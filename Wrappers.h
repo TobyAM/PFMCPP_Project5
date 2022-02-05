@@ -1,12 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include "CoffeeShop.h"
-#include "InvoiceManager.h"
-#include "ScooterRental.h"
-#include "Studio.h"
-#include "Town.h"
-
 struct CoffeeShopWrapper
 {
     CoffeeShopWrapper(CoffeeShop* shop);

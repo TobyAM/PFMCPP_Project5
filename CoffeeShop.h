@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include "LeakedObjectDetector.h"
 
 struct CoffeeShop
 {
@@ -36,7 +34,7 @@ struct CoffeeShop
         JUCE_LEAK_DETECTOR(Customer)
     };
 
-    Coffee brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool cream, const bool sugar);
+    Coffee brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool withCream, const bool withsugar);
     bool grindCoffee(const Coffee& coffeeType, const int coarseness, const Customer& customerA);
     void renameCustomer(Customer& customerA, const std::string newName);
     void pourCoffee(const Coffee& coffee, const int size);
