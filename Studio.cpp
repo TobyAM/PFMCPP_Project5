@@ -1,4 +1,3 @@
-#pragma once
 #include "Studio.h"
 
 Studio::Studio() :

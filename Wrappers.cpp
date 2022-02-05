@@ -1,4 +1,5 @@
 #include "Wrappers.h"
+#include "InvoiceManager.h"
 
 CoffeeShopWrapper::CoffeeShopWrapper( CoffeeShop* shop) : pointerToShop( shop) { }
 
@@ -20,7 +21,7 @@ InvoiceManager::InvoiceWrapper::~InvoiceWrapper()
     delete pointer;
 }
 
-InvoiceManager::InvoiceWrapper createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
+InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type, const float time)
 {
     InvoiceManager::InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
     // ++numInvoices;
