@@ -9,37 +9,29 @@
 
 struct CoffeeShopWrapper
 {
-    CoffeeShopWrapper( CoffeeShop* shop) : pointerToShop( shop) { }
-    ~CoffeeShopWrapper()
-    {
-        delete pointerToShop;
-    }
+    CoffeeShopWrapper(CoffeeShop* shop);
+    ~CoffeeShopWrapper();
 
     CoffeeShop* pointerToShop = nullptr;
 };
 
 struct CustomerWrapper
 {
-    CustomerWrapper( CoffeeShop::Customer* ptr) : pointer( ptr) { }
-    ~CustomerWrapper()
-    {
-        delete pointer;
-    }
+    CustomerWrapper( CoffeeShop::Customer* ptr);
+    ~CustomerWrapper();
+
 
     CoffeeShop::Customer* pointer = nullptr;
 };
 
-InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
+struct InvoiceWrapper
 {
-    InvoiceWrapper newInvoice( new Invoice(name) );
-    ++numInvoices;
-    newInvoice.pointer->invoiceNumber = numInvoices;
-    newInvoice.pointer->dueDate = date;
-    newInvoice.pointer->workType = type;
-    newInvoice.pointer->workTime = time;
+    InvoiceWrapper( InvoiceManager::Invoice* ptr);
 
-    return newInvoice;
-}
+    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
+
+    InvoiceManager::Invoice* pointer = nullptr;
+};
 
 struct InvoiceManagerWrapper
 {
@@ -51,25 +43,6 @@ struct InvoiceManagerWrapper
 
     InvoiceManager* pointerToInvoiceManager = nullptr;
 };
-
-struct InvoiceWrapper
-    {
-        InvoiceWrapper( Invoice* ptr) : pointer( ptr) { }
-        ~InvoiceWrapper()
-        {
-            delete pointer;
-        }
-
-        Invoice* pointer = nullptr;
-    };
-
-    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
-    bool checkOverdue(const Invoice& invoice);
-    float checkBalance(const Invoice& invoice);
-    void printHolidyCards();
-    void printNumInvoices();
-
-    JUCE_LEAK_DETECTOR(InvoiceManager)
 
 struct ScooterRentalWrapper
 {
@@ -103,4 +76,3 @@ struct TownWrapper
 
     Town* pointer = nullptr;
 };
-

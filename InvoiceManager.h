@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "LeakedObjectDetector.h"
+// struct InvoiceWrapper;
 
 struct InvoiceManager
 {
@@ -25,4 +26,10 @@ struct InvoiceManager
         JUCE_LEAK_DETECTOR(Invoice)
     };
 
+bool checkOverdue(const Invoice& invoice);
+float checkBalance(const Invoice& invoice);
+void printHolidyCards();
+void printNumInvoices();
+
+JUCE_LEAK_DETECTOR(InvoiceManager)
 };
