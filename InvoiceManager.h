@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include "LeakedObjectDetector.h"
-// struct InvoiceWrapper;
 
 struct InvoiceManager
 {
@@ -20,16 +19,25 @@ struct InvoiceManager
         float workTime, totalBalance, dueDate;
         bool overdue;
 
-        void download(const std::string format);
+        void download(const std::string format = "pdf");
         void markAsPaid(Invoice& invoiceA);
 
         JUCE_LEAK_DETECTOR(Invoice)
     };
 
-bool checkOverdue(const Invoice& invoice);
-float checkBalance(const Invoice& invoice);
-void printHolidyCards();
-void printNumInvoices();
+    struct InvoiceWrapper
+    {
+        InvoiceWrapper( Invoice* ptr);
+        ~InvoiceWrapper();
 
-JUCE_LEAK_DETECTOR(InvoiceManager)
+        Invoice* pointer = nullptr;
+    };
+
+    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate,  const std::string type = "post", const float time = 0.0f );
+    bool checkOverdue(const Invoice& invoice);
+    float checkBalance(const Invoice& invoice);
+    void printHolidyCards();
+    void printNumInvoices();
+
+    JUCE_LEAK_DETECTOR(InvoiceManager)
 };

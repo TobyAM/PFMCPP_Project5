@@ -14,19 +14,17 @@ CustomerWrapper::~CustomerWrapper()
 }
 
 
-InvoiceWrapper::InvoiceWrapper( InvoiceManager::Invoice* ptr) : pointer( ptr) { }
-InvoiceWrapper::~InvoiceWrapper()
+InvoiceManager::InvoiceWrapper::InvoiceWrapper( InvoiceManager::Invoice* ptr) : pointer( ptr) { }
+InvoiceManager::InvoiceWrapper::~InvoiceWrapper()
 {
     delete pointer;
 }
 
-InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
-
-InvoiceWrapper createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
+InvoiceManager::InvoiceWrapper createInvoice(const std::string name, const float date, const std::string type = "post", const float time = 0.0f)
 {
-    InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
-    ++numInvoices;
-    newInvoice.pointer->invoiceNumber = numInvoices;
+    InvoiceManager::InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
+    // ++numInvoices;
+    // newInvoice.pointer->invoiceNumber = numInvoices;
     newInvoice.pointer->dueDate = date;
     newInvoice.pointer->workType = type;
     newInvoice.pointer->workTime = time;
@@ -34,46 +32,26 @@ InvoiceWrapper createInvoice(const std::string name, const float date, const std
     return newInvoice;
 }
 
-struct InvoiceManagerWrapper
+InvoiceManagerWrapper::InvoiceManagerWrapper( InvoiceManager* pointer) : pointerToInvoiceManager( pointer) { }
+InvoiceManagerWrapper::~InvoiceManagerWrapper()
 {
-    InvoiceManagerWrapper( InvoiceManager* pointer) : pointerToInvoiceManager( pointer) { }
-    ~InvoiceManagerWrapper()
-    {
-        delete pointerToInvoiceManager;
-    }
+    delete pointerToInvoiceManager;
+}
 
-    InvoiceManager* pointerToInvoiceManager = nullptr;
-};
-
-struct ScooterRentalWrapper
+ScooterRentalWrapper::ScooterRentalWrapper( ScooterRental* ptr) : pointer( ptr) { }
+ScooterRentalWrapper::~ScooterRentalWrapper()
 {
-    ScooterRentalWrapper( ScooterRental* ptr) : pointer( ptr) { }
-    ~ScooterRentalWrapper()
-    {
-        delete pointer;
-    }
+    delete pointer;
+}
 
-    ScooterRental* pointer = nullptr;
-};
-
-struct StudioWrapper
+StudioWrapper::StudioWrapper( Studio* ptr) : pointer( ptr) { }
+StudioWrapper::~StudioWrapper()
 {
-    StudioWrapper( Studio* ptr) : pointer( ptr) { }
-    ~StudioWrapper()
-    {
-        delete pointer;
-    }
+    delete pointer;
+}
 
-    Studio* pointer = nullptr;
-};
-
-struct TownWrapper
+TownWrapper::TownWrapper( Town* ptr) : pointer( ptr) { }
+TownWrapper::~TownWrapper()
 {
-    TownWrapper( Town* ptr) : pointer( ptr) { }
-    ~TownWrapper()
-    {
-        delete pointer;
-    }
-
-    Town* pointer = nullptr;
-};
+    delete pointer;
+}

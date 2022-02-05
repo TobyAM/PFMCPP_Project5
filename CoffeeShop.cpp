@@ -47,7 +47,7 @@ CoffeeShop::Customer::~Customer()
 
 }
 
-bool CoffeeShop::Customer::contactCustomer(std::string msg = "Your order is ready.")
+bool CoffeeShop::Customer::contactCustomer(std::string msg)
 {
     if( customerPhoneNumber > 0 )
     {

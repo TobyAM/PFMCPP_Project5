@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include "LeakedObjectDetector.h"
+#include "CoffeeShop.h"
+#include "ScooterRental.h"
+#include "InvoiceManager.h"
 
 struct Studio
 {
@@ -13,7 +16,7 @@ struct Studio
     InvoiceManager invoices;
 
     void orderRun(const std::string runner, const InvoiceManager::Invoice& invoice, const ScooterRental& scooter, const int latCoord, const int longCoord, const std::string order);
-    void prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool cream, const bool sugar);
+    void prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool cream = false, const bool sugar = false);
     void printNumInterns();
 
     JUCE_LEAK_DETECTOR(Studio)

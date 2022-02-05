@@ -39,7 +39,7 @@ InvoiceManager::Invoice::~Invoice()
     std::cout << "-----------------\n";
 }
 
-void InvoiceManager::Invoice::download(std::string format = "pdf")
+void InvoiceManager::Invoice::download(std::string format)
 {
     std::cout << "https:\\\\my.freshbooks.com\\invoice." << format << "\n";
 }

@@ -31,7 +31,7 @@ struct CoffeeShop
 
         bool useRewardsPoints(float rewardsPoints);
         void newMemberPromotion(const float incentiveAmount);
-        bool contactCustomer(const std::string msg);
+        bool contactCustomer(const std::string msg = "Your order is ready.");
         void printRewardsPoints();
         JUCE_LEAK_DETECTOR(Customer)
     };

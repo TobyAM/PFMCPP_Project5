@@ -24,55 +24,34 @@ struct CustomerWrapper
     CoffeeShop::Customer* pointer = nullptr;
 };
 
-struct InvoiceWrapper
-{
-    InvoiceWrapper( InvoiceManager::Invoice* ptr);
-
-    InvoiceWrapper createInvoice(const std::string clientName, const float dueDate, const std::string workType, const float workTime);
-
-    InvoiceManager::Invoice* pointer = nullptr;
-};
-
 struct InvoiceManagerWrapper
 {
-    InvoiceManagerWrapper( InvoiceManager* pointer) : pointerToInvoiceManager( pointer) { }
-    ~InvoiceManagerWrapper()
-    {
-        delete pointerToInvoiceManager;
-    }
+    InvoiceManagerWrapper( InvoiceManager* pointer);
+    ~InvoiceManagerWrapper();
 
     InvoiceManager* pointerToInvoiceManager = nullptr;
 };
 
 struct ScooterRentalWrapper
 {
-    ScooterRentalWrapper( ScooterRental* ptr) : pointer( ptr) { }
-    ~ScooterRentalWrapper()
-    {
-        delete pointer;
-    }
+    ScooterRentalWrapper( ScooterRental* ptr);
+    ~ScooterRentalWrapper();
 
     ScooterRental* pointer = nullptr;
 };
 
 struct StudioWrapper
 {
-    StudioWrapper( Studio* ptr) : pointer( ptr) { }
-    ~StudioWrapper()
-    {
-        delete pointer;
-    }
+    StudioWrapper( Studio* ptr);
+    ~StudioWrapper();
 
     Studio* pointer = nullptr;
 };
 
 struct TownWrapper
 {
-    TownWrapper( Town* ptr) : pointer( ptr) { }
-    ~TownWrapper()
-    {
-        delete pointer;
-    }
+    TownWrapper( Town* ptr);
+    ~TownWrapper();
 
     Town* pointer = nullptr;
 };
