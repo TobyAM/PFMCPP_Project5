@@ -48,7 +48,6 @@
  Wait for my code review.
  */
 
-#pragma once
 #include "LeakedObjectDetector.h"
 #include <iostream>
 #include "CoffeeShop.h"

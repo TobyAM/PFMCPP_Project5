@@ -1,3 +1,4 @@
+#pragma once
 #include "InvoiceManager.h"
 
 InvoiceManager::InvoiceManager() :
