@@ -1,5 +1,4 @@
 #include <iostream>
-#include "LeakedObjectDetector.h"
 #include "CoffeeShop.h"
 
 CoffeeShop::CoffeeShop() :

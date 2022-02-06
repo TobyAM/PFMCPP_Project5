@@ -4,7 +4,7 @@ struct CoffeeShopWrapper
 {
     CoffeeShopWrapper(CoffeeShop* shop);
     ~CoffeeShopWrapper();
-
+    
     CoffeeShop* pointerToShop = nullptr;
 };
 
@@ -12,7 +12,6 @@ struct CustomerWrapper
 {
     CustomerWrapper( CoffeeShop::Customer* ptr);
     ~CustomerWrapper();
-
 
     CoffeeShop::Customer* pointer = nullptr;
 };
