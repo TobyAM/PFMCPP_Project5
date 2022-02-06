@@ -27,12 +27,18 @@ struct CoffeeShop
         bool rewardsMember;
         float customerPhoneNumber, rewardsBalance;
         std::string name;
-
         bool useRewardsPoints(float rewardsPoints);
         void newMemberPromotion(const float incentiveAmount);
         bool contactCustomer(const std::string msg = "Your order is ready.");
         void printRewardsPoints();
         JUCE_LEAK_DETECTOR(Customer)
+    };
+
+    struct CustomerWrapper
+    {
+        CustomerWrapper( Customer* ptr);
+        ~CustomerWrapper();
+        Customer* pointer = nullptr;
     };
 
     Coffee brewCoffee(const std::string customerName, const Coffee& coffeeType, const int size, const std::string brewType, const bool withCream, const bool withsugar);

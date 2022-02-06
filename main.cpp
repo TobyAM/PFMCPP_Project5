@@ -64,7 +64,7 @@ int main()
     std::cout << std::endl; // new UDT
 
     CoffeeShopWrapper broBucks( new CoffeeShop() );
-    CustomerWrapper tobyMason( new CoffeeShop::Customer() );
+    CoffeeShop::CustomerWrapper tobyMason( new CoffeeShop::Customer() );
 
     broBucks.pointerToShop->renameCustomer(*tobyMason.pointer, "Toby Mason");
     broBucks.pointerToShop->grindCoffee(broBucks.pointerToShop->standardBrew, 10, *tobyMason.pointer);

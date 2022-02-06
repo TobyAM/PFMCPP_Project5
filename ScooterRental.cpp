@@ -34,7 +34,6 @@ float ScooterRental::lock()
 {
     voltage = 0.0f;
     std::cout << "The scooter voltage is " << voltage << std::endl;
-    
     return balance;
 }
 

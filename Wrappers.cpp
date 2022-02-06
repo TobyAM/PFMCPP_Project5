@@ -1,4 +1,3 @@
-// #include <iostream>
 #include "InvoiceManager.h"
 #include "CoffeeShop.h"
 #include "ScooterRental.h"
@@ -12,12 +11,6 @@ CoffeeShopWrapper::CoffeeShopWrapper( CoffeeShop* shop) : pointerToShop( shop) {
 CoffeeShopWrapper::~CoffeeShopWrapper()
 {
     delete pointerToShop;
-}
-
-CustomerWrapper::CustomerWrapper( CoffeeShop::Customer* ptr) : pointer( ptr) { }
-CustomerWrapper::~CustomerWrapper()
-{
-    delete pointer;
 }
 
 InvoiceManager::InvoiceWrapper::InvoiceWrapper( InvoiceManager::Invoice* ptr) : pointer( ptr) { }

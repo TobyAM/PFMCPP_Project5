@@ -17,10 +17,8 @@ struct InvoiceManager
         int invoiceNumber;
         float workTime, totalBalance, dueDate;
         bool overdue;
-
         void download(const std::string format = "pdf");
         void markAsPaid(Invoice& invoiceA);
-
         JUCE_LEAK_DETECTOR(Invoice)
     };
 
@@ -28,7 +26,6 @@ struct InvoiceManager
     {
         InvoiceWrapper( Invoice* ptr);
         ~InvoiceWrapper();
-
         Invoice* pointer = nullptr;
     };
 
@@ -37,6 +34,5 @@ struct InvoiceManager
     float checkBalance(const Invoice& invoice);
     void printHolidyCards();
     void printNumInvoices();
-
     JUCE_LEAK_DETECTOR(InvoiceManager)
 };

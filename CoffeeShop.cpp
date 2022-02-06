@@ -18,6 +18,12 @@ CoffeeShop::~CoffeeShop()
     std::cout << "\n- CoffeeShop destructed!" << std::endl;
 }
 
+CoffeeShop::CustomerWrapper::CustomerWrapper( CoffeeShop::Customer* ptr) : pointer( ptr) { }
+CoffeeShop::CustomerWrapper::~CustomerWrapper()
+{
+    delete pointer;
+}
+
 CoffeeShop::Coffee::Coffee() :
 type("columbian"),
 roast("dark"),
@@ -57,11 +63,16 @@ bool CoffeeShop::Customer::contactCustomer(std::string msg)
             std::cout << "Texting " << name << ": \"" << msg << "\"" << std::endl;
             return true;
         }
-        else std::cout << "Message is too short.\n";
+        else
+        {
+            std::cout << "Message is too short.\n";
+        }
 
     }
-    else std::cout << name << " doesn't have a phone number saved.\n";
-
+    else
+    {
+        std::cout << name << " doesn't have a phone number saved.\n";
+    }
     return false;
 }
 
@@ -75,11 +86,17 @@ bool CoffeeShop::Customer::useRewardsPoints(float rewardsPoints)
             std::cout << name << " used " << rewardsPoints << " points, leaving a balance of " << rewardsBalance << "\n";
             return true;
         }
-        else std::cout << name << " doesn't have enough points.\n";
+        else
+        {
+            std::cout << name << " doesn't have enough points.\n";
+        }
 
     }
-    else std::cout << name << " is not a rewards member!\n";
-
+    else
+    {
+        std::cout << name << " is not a rewards member!\n";
+    }
+    
     return false;
 }
 
@@ -109,9 +126,7 @@ CoffeeShop::Coffee CoffeeShop::brewCoffee(const std::string customerName, const 
     }
     
     std::cout << std::endl;
-
     CoffeeShop::Coffee newCoffee;
-
     return newCoffee;
 }
 

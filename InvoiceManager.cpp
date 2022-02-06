@@ -29,8 +29,7 @@ overdue(false)
     std::cout << "workTime: " << workTime << std::endl;
     std::cout << "totalBalance: $" << totalBalance << std::endl;
     std::cout << "overdue: false\n";
-    std::cout << "+++++++++++++++++\n";
-    
+    std::cout << "+++++++++++++++++\n";    
 }
 
 InvoiceManager::Invoice::~Invoice()
@@ -59,16 +58,13 @@ bool InvoiceManager::checkOverdue(const Invoice& invoiceA)
         std::cout <<  "not ";
     }
     std::cout << "overdue.\n";
-
     return invoiceA.overdue;
 }
 
 float InvoiceManager::checkBalance(const Invoice& invoiceA)
 {
     std::cout << invoiceA.invoiceNumber << " balance is: " << invoiceA.totalBalance << std::endl;
-
     return invoiceA.totalBalance;
-
 }
 
 void InvoiceManager::printHolidyCards()
@@ -91,11 +87,10 @@ void InvoiceManager::printNumInvoices()
 InvoiceManager::InvoiceWrapper InvoiceManager::createInvoice(const std::string name, const float date, const std::string type, const float time)
 {
     InvoiceManager::InvoiceWrapper newInvoice( new InvoiceManager::Invoice(name) );
-    // ++numInvoices;
-    // newInvoice.pointer->invoiceNumber = numInvoices;
+    ++numInvoices;
+    newInvoice.pointer->invoiceNumber = numInvoices;
     newInvoice.pointer->dueDate = date;
     newInvoice.pointer->workType = type;
     newInvoice.pointer->workTime = time;
-
     return newInvoice;
 }

@@ -37,10 +37,14 @@ void Studio::orderRun(const std::string runner, const InvoiceManager::Invoice& i
         std::cout << "||";
         for(int x = 1; x <= 36; ++x)
         {
-            if(x == longRectified && y == latRectified) std::cout << "X ";
-            else if(x == scooterLongRectified && y == scooterLatRectified) std::cout << "U ";
-            else if(x == 36) std::cout << "||";
-            else std::cout << "  ";
+            if(x == longRectified && y == latRectified)
+                std::cout << "X ";
+            else if(x == scooterLongRectified && y == scooterLatRectified)
+                std::cout << "U ";
+            else if(x == 36)
+                std::cout << "||";
+            else
+                std::cout << "  ";
         }
         
         std::cout << std::endl;
@@ -51,9 +55,7 @@ void Studio::orderRun(const std::string runner, const InvoiceManager::Invoice& i
     }
 
     std::cout << std::endl;
- 
     balance += scooter.balance;
-   
 }
 
 void Studio::prepareCoffee(const std::string runner, const std::string clientName, const CoffeeShop::Coffee& coffeeType, const int size, const std::string brewType, const bool withCream, const bool withSugar)
