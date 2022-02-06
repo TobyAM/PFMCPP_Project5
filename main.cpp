@@ -50,12 +50,12 @@
 
 #include "LeakedObjectDetector.h"
 #include <iostream>
+#include "Wrappers.h"
 #include "CoffeeShop.h"
 #include "InvoiceManager.h"
 #include "ScooterRental.h"
 #include "Studio.h"
 #include "Town.h"
-#include "Wrappers.h"
 
 int main()
 {
